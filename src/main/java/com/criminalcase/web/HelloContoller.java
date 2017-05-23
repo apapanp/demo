@@ -18,6 +18,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by apapan on 5/19/2017 AD.
@@ -49,7 +50,7 @@ public class HelloContoller {
         return new ResponseEntity<>(tradeRecordRepository.findTradeRecordByTo_card_idContains(cardid), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/to" , method=RequestMethod.GET  )
+    /*@RequestMapping(value = "/to" , method=RequestMethod.GET  )
     public ResponseEntity<Collection<TradeRecord>> findByAllTo(@RequestParam Map<String,String> params,HttpServletResponse resp){
         resp.setHeader("Access-Control-Allow-Origin", "*");
         Map<String,String> resultmap = new HashMap<>();
@@ -58,9 +59,9 @@ public class HelloContoller {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
             return new ResponseEntity<>(tradeRecordRepository.findTradeRecordByTo_card_idIs(Integer.parseInt(resultmap.get("cardid")),resultmap.get("startdate"),resultmap.get("enddate")), HttpStatus.OK);
-    }
+    }*/
 
-    @RequestMapping(value = "/from" , method=RequestMethod.GET  )
+   /* @RequestMapping(value = "/from" , method=RequestMethod.GET  )
     public ResponseEntity<Collection<TradeRecord>> findByAllFrom(@RequestParam Map<String,String> params,HttpServletResponse resp){
         resp.setHeader("Access-Control-Allow-Origin", "*");
         Map<String,String> resultmap = new HashMap<>();
@@ -69,18 +70,46 @@ public class HelloContoller {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(tradeRecordRepository.findTradeRecordByFrom_card_idIs(Integer.parseInt(resultmap.get("cardid")),resultmap.get("startdate"),resultmap.get("enddate")), HttpStatus.OK);
+    }*/
+
+    @RequestMapping(value = "/in" , method = RequestMethod.GET)
+    public ResponseEntity<Collection<TradeRecord>> findByAllTo(@RequestParam Map<String,String> params, HttpServletResponse resp){
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        Map<String,String> resultmap = new HashMap<>();
+        resultmap = params;
+        List<Integer> cardidList= Arrays.asList(resultmap.get("cardid").split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        String json = "jsonResponse";
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(tradeRecordRepository.findTradeRecordByTo_card_idContainsAndDate_time(cardidList,resultmap.get("startdate"),resultmap.get("enddate")), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/out" , method = RequestMethod.GET)
+    public ResponseEntity<Collection<TradeRecord>> findByAllFrom(@RequestParam Map<String,String> params, HttpServletResponse resp){
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        Map<String,String> resultmap = new HashMap<>();
+        resultmap = params;
+        List<Integer> cardidList= Arrays.asList(resultmap.get("cardid").split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        String json = "jsonResponse";
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(tradeRecordRepository.findTradeRecordByFrom_card_idContainsAndDate_time(cardidList,resultmap.get("startdate"),resultmap.get("enddate")), HttpStatus.OK);
+    }
 
-    @GetMapping(path="/all")
+   /* @GetMapping(path="/all")
     public @ResponseBody Iterable<TradeRecord> getAllUsers() {
         // This returns a JSON or XML with the users
         return tradeRecordService.getAll();
     }
+    */
     @RequestMapping(value = "/parameters" , method= RequestMethod.GET )
     public Map<String,String> test2(@RequestParam Map<String,String> params){
         Map<String,String> resultmap = new HashMap<>();
         resultmap = params;
+        List<Integer> cardidList= Arrays.asList(resultmap.get("cardid").split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        for (int i =0 ; i <cardidList.size();i++){
+            System.out.println(cardidList.get(i));
+        }
         return resultmap;
     }
 

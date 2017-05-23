@@ -39,4 +39,14 @@ public class TradeServiceImpl implements TradeRecordService{
         return recordRepository.findTradeRecordByTo_card_idContains(inventoryIdList);
     }
 
+    @Override
+    public List<TradeRecord> findTradeRecordByTo_card_idContainsAndDate_time(List<Integer> inventoryIdList, String startdate, String enddate) {
+        return recordRepository.findTradeRecordByTo_card_idContainsAndDate_time(inventoryIdList,startdate,enddate);
+    }
+
+    @Override
+    public List<TradeRecord> findTradeRecordByfrom_card_idContainsAndDate_time(List<Integer> inventoryIdList, String startdate, String enddate) {
+        return recordRepository.findTradeRecordByFrom_card_idContainsAndDate_time(inventoryIdList,startdate,enddate);
+    }
+
 }
