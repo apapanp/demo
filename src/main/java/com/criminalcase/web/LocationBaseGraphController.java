@@ -43,5 +43,17 @@ public class LocationBaseGraphController {
 
     }
 
+    @RequestMapping(value = "/in", method = RequestMethod.GET)
+    public ResponseEntity<Collection<TradeRecordCardFrq>> findByToCardID(@RequestParam Map<String, String> params, HttpServletResponse resp) {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        Map<String, String> resultmap = new HashMap<>();
+        resultmap = params;
+        List<String> cardidList = Arrays.asList(resultmap.get("cardid").split(","));
+        String json = "jsonResponse";
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(tradeRecordCardFrqRepository.findFrqByToCard_number(cardidList, resultmap.get("startdate"), resultmap.get("enddate")), HttpStatus.OK);
+
+    }
 
 }

@@ -24,4 +24,15 @@ public interface TradeRecordCardFrqRepository extends Repository<TradeRecordCard
             "group by a.bank_address,b.card_number,b.id "
             ,nativeQuery = true)
     List<TradeRecordCardFrq> findFrqByFromCard_number (@Param("ids") List<String> inventoryIdList, @Param("startdate") String startdate, @Param("enddate") String enddate);
+
+    @Modifying
+    @Query(value = "select count(1) as frequency,a.bank_address,b.card_number,b.id as case_id from t_trade_record a\n" +
+            "join  t_card b\n" +
+            "on  a.to_card_id = b.id\n" +
+            "where b.card_number in :ids " +
+            "and STR_TO_DATE(a.date_time,'%Y%m%d%H%i%s') >= STR_TO_DATE(:startdate,'%Y%m%d%H%i%s') "+
+            "and STR_TO_DATE(a.date_time,'%Y%m%d%H%i%s') <= STR_TO_DATE(:enddate,'%Y%m%d%H%i%s') " +
+            "group by a.bank_address,b.card_number,b.id "
+            ,nativeQuery = true)
+    List<TradeRecordCardFrq> findFrqByToCard_number (@Param("ids") List<String> inventoryIdList, @Param("startdate") String startdate, @Param("enddate") String enddate);
 }
