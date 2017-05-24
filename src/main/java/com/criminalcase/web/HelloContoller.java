@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * Created by apapan on 5/19/2017 AD.
  */
 @RestController
-@RequestMapping("/txntrngp/")
+@RequestMapping("/test/")
 public class HelloContoller {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
