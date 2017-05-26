@@ -14,9 +14,9 @@ public class TradeRecordCardFrq implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
-    private int frequency;
-
     private String bank_address;
+
+    private int frequency;
 
     private String card_number;
 
@@ -33,11 +33,13 @@ public class TradeRecordCardFrq implements Serializable {
     public TradeRecordCardFrq() {
     }
 
-    public TradeRecordCardFrq(String bank_address, String card_number, int case_id) {
+    public TradeRecordCardFrq(int frequency, String bank_address, String card_number, int case_id) {
+        this.frequency = frequency;
         this.bank_address = bank_address;
         this.card_number = card_number;
         this.case_id = case_id;
     }
+
 
     public String getCard_number() {
         return card_number;
