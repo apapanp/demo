@@ -16,9 +16,10 @@ import java.util.List;
 public interface TradeRecordAndTradeCardRepository extends Repository<TradeCardAccount,Long>{
 
     @Modifying
-    @Query(value = "select a.from_card_id as card_id, a.money_amount,a.date_time,b.card_number from t_trade_record a\n" +
+    @Query(value = "select a.from_card_id as card_id, a.money_amount,a.date_time,b.card_number,(@cnt\\:=@cnt+1) as id  from t_trade_record a\n" +
             "join  t_card b\n" +
             "on  a.from_card_id = b.id\n" +
+            "CROSS JOIN (SELECT @cnt\\:=0) AS dummy\n"+
             "where b.card_number in :ids " +
             "and STR_TO_DATE(a.date_time,'%Y%m%d%H%i%s') >= STR_TO_DATE(:startdate,'%Y%m%d%H%i%s') "+
             "and STR_TO_DATE(a.date_time,'%Y%m%d%H%i%s') <= STR_TO_DATE(:enddate,'%Y%m%d%H%i%s') " +
@@ -29,9 +30,10 @@ public interface TradeRecordAndTradeCardRepository extends Repository<TradeCardA
     List<TradeCardAccount> findByFromCard_number (@Param("ids") List<String> inventoryIdList,@Param("startdate") String startdate,@Param("enddate") String enddate);
 
     @Modifying
-    @Query(value = "select a.from_card_id as card_id, a.money_amount,a.date_time,b.card_number from t_trade_record a\n" +
+    @Query(value = "select a.from_card_id as card_id, a.money_amount,a.date_time,b.card_number,(@cnt\\:=@cnt+1) as id from t_trade_record a\n" +
             "join  t_card b\n" +
             "on  a.to_card_id = b.id\n" +
+            "CROSS JOIN (SELECT @cnt\\:=0) AS dummy\n"+
             "where b.card_number in :ids " +
             "and STR_TO_DATE(a.date_time,'%Y%m%d%H%i%s') >= STR_TO_DATE(:startdate,'%Y%m%d%H%i%s') "+
             "and STR_TO_DATE(a.date_time,'%Y%m%d%H%i%s') <= STR_TO_DATE(:enddate,'%Y%m%d%H%i%s') "

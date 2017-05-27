@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class TradeRecordCardFrq implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private String bank_address;
 
@@ -21,6 +22,14 @@ public class TradeRecordCardFrq implements Serializable {
     private String card_number;
 
     private int case_id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public int getFrequency() {
         return frequency;

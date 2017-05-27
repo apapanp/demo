@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,6 +43,9 @@ public class AmountFrequncyGraphController {
     @Autowired
     private TradeRecordCardAmtFrqRepository tradeRecordCardAmtFrqRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @RequestMapping(value = "/out", method = RequestMethod.GET)
     public ResponseEntity<Collection<TradeRecordCardAmtFrq>> findFrqAmtByFromCardID(@RequestParam Map<String, String> params, HttpServletResponse resp) {
         resp.setHeader("Access-Control-Allow-Origin", "*");
@@ -49,7 +55,7 @@ public class AmountFrequncyGraphController {
         String json = "jsonResponse";
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(tradeRecordCardAmtFrqRepository.findFrqAmtByFromCard_number(cardidList, resultmap.get("startdate"), resultmap.get("enddate")), HttpStatus.OK);
+        return new ResponseEntity<>(tradeRecordCardAmtFrqRepository.findByCard_numberAndFrequencyFrom(cardidList, resultmap.get("startdate"), resultmap.get("enddate")), HttpStatus.OK);
 
     }
 
@@ -62,8 +68,10 @@ public class AmountFrequncyGraphController {
         String json = "jsonResponse";
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(tradeRecordCardAmtFrqRepository.findFrqAmtByToCard_number(cardidList, resultmap.get("startdate"), resultmap.get("enddate")), HttpStatus.OK);
+        return new ResponseEntity<>(tradeRecordCardAmtFrqRepository.findByCard_numberAndFrequencyTo(cardidList, resultmap.get("startdate"), resultmap.get("enddate")), HttpStatus.OK);
     }
+
+
 
     @RequestMapping(value = "/parameters" , method= RequestMethod.GET )
     public Map<String,String> test2(@RequestParam Map<String,String> params){

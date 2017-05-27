@@ -1,9 +1,6 @@
 package com.criminalcase.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -11,27 +8,30 @@ import java.io.Serializable;
  */
 @Entity
 public class TradeRecordCardAmtFrq implements Serializable
-{
+{   private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
-
+    @Column(name = "id")
+    private long id;
+    @Column(name = "card_number")
     private String card_number;
-
+    @Column(name = "money_amount")
+    private float money_amount;
+    @Column(name = "frequency")
     private int frequency;
 
-    private float money_amount;
-
-
-
-    private int card_id;
 
 
     public int getFrequency() {
+
         return frequency;
     }
 
+
+
     public float getMoney_amount() {
+
         return money_amount;
     }
 
@@ -39,20 +39,19 @@ public class TradeRecordCardAmtFrq implements Serializable
         return card_number;
     }
 
-    public TradeRecordCardAmtFrq(float money_amount, String card_number, int card_id) {
-        this.money_amount = money_amount;
+
+
+    public TradeRecordCardAmtFrq(String card_number, float money_amount, int frequency) {
         this.card_number = card_number;
-        this.card_id = card_id;
+        this.money_amount = money_amount;
+
+        this.frequency = frequency;
     }
 
     public TradeRecordCardAmtFrq() {
     }
 
-    public int getCard_id() {
 
-
-        return card_id;
-    }
 
     public void setFrequency(int frequency) {
         this.frequency = frequency;
@@ -66,7 +65,12 @@ public class TradeRecordCardAmtFrq implements Serializable
         this.card_number = card_number;
     }
 
-    public void setCard_id(int card_id) {
-        this.card_id = card_id;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+
     }
 }

@@ -14,9 +14,19 @@ public class TradeCardAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
+    private Long id;
+
     private float money_amount;
 
     private String card_number;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     private int card_id;
 
